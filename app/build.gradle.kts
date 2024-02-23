@@ -9,10 +9,13 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+	id("org.springframework.boot") version "3.2.2"
+    id("org.flywaydb.flyway") version "10.8.1"
 }
 
+apply(plugin = "io.spring.dependency-management")
+
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
@@ -22,6 +25,11 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 application {
