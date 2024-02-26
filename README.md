@@ -16,7 +16,9 @@ Make sure you have the following installed:
 
 ### Database Configuration
 
-1. Create a new `.env` file based on the provided `.env.example` file.
+1. Create a database named 'crud_java' in local postgresql and a user that have an access to the database.
+
+1. Create a new `.env` file based on the provided `.env.example` file. Change the username and password to the user you created in the step above.
 
    ```env
    DB_USERNAME=test
