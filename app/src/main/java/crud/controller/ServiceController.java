@@ -1,82 +1,89 @@
 package crud.controller;
 
-import java.security.Provider;
-import java.security.Provider.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import crud.entity.ProviderEntity;
 import crud.entity.ServiceEntity;
-import crud.service.ProviderService;
+import crud.entity.ProviderEntity;
 import crud.service.ServiceService;
+import crud.service.ProviderService;
+import crud.utils.DepthLevel;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/services")
+@Api(tags = "Service Management", description = "APIs for managing services")
 public class ServiceController {
+
     @Autowired
     private ServiceService serviceService;
 
     @Autowired
     private ProviderService providerService;
 
-    // Create a new service
     @PostMapping
-    public ServiceEntity createService(@RequestBody ServiceEntity service) {
+    @ApiOperation(value = "Create a new service")
+    public ServiceEntity createService(
+            @ApiParam(value = "Service data", required = true) @RequestBody ServiceEntity service) {
         return serviceService.createService(service);
     }
 
-    // Get all services
     @GetMapping
-    public List<ServiceEntity> getAllServices() {
-        return serviceService.getAllServices();
+    @ApiOperation(value = "Get all services")
+    public List<ServiceEntity> getAllServices(
+            @ApiParam(value = "Depth level for fetching related entities", defaultValue = "shallow") @RequestParam(defaultValue = "shallow") String depth) {
+        DepthLevel depthLevel = DepthLevel.fromString(depth);
+        return serviceService.getAllServices(depthLevel);
     }
 
-    // Get service by ID
     @GetMapping("/{id}")
-    public ServiceEntity getServiceById(@PathVariable Long id) {
-        return serviceService.getServiceById(id);
+    @ApiOperation(value = "Get service by ID")
+    public ServiceEntity getServiceById(
+            @ApiParam(value = "Service ID", required = true) @PathVariable Long id,
+            @ApiParam(value = "Depth level for fetching related entities", defaultValue = "shallow") @RequestParam(defaultValue = "shallow") String depth) {
+        DepthLevel depthLevel = DepthLevel.fromString(depth);
+        return serviceService.getServiceById(id, depthLevel);
     }
 
-    // Update service by ID
     @PutMapping("/{id}")
-    public ServiceEntity updateService(@PathVariable Long id, @RequestBody ServiceEntity service) {
+    @ApiOperation(value = "Update service by ID")
+    public ServiceEntity updateService(
+            @ApiParam(value = "Service ID", required = true) @PathVariable Long id,
+            @ApiParam(value = "Updated service data", required = true) @RequestBody ServiceEntity service) {
         return serviceService.updateService(id, service);
     }
 
-    // Delete service by ID
     @DeleteMapping("/{id}")
-    public void deleteService(@PathVariable Long id) {
+    @ApiOperation(value = "Delete service by ID")
+    public void deleteService(
+            @ApiParam(value = "Service ID", required = true) @PathVariable Long id) {
         serviceService.deleteService(id);
     }
 
-    // Add provider to service
     @PostMapping("/{serviceId}/providers/{providerId}")
+    @ApiOperation(value = "Add provider to service")
     public ServiceEntity addProviderToService(
-            @PathVariable Long serviceId,
-            @PathVariable Long providerId) {
-        ServiceEntity service = serviceService.getServiceById(serviceId);
-        ProviderEntity provider = providerService.getProviderById(providerId);
+            @ApiParam(value = "Service ID", required = true) @PathVariable Long serviceId,
+            @ApiParam(value = "Provider ID", required = true) @PathVariable Long providerId) {
+        ServiceEntity service = serviceService.getServiceById(serviceId, DepthLevel.MEDIUM);
+        ProviderEntity provider = providerService.getProviderById(providerId, DepthLevel.SHALLOW);
 
         service.addProvider(provider);
         return serviceService.updateService(serviceId, service);
     }
 
-    // Remove provider from service
     @DeleteMapping("/{serviceId}/providers/{providerId}")
+    @ApiOperation(value = "Remove provider from service")
     public ServiceEntity removeProviderFromService(
-            @PathVariable Long serviceId,
-            @PathVariable Long providerId) {
-        ServiceEntity service = serviceService.getServiceById(serviceId);
-        ProviderEntity provider = providerService.getProviderById(providerId);
+            @ApiParam(value = "Service ID", required = true) @PathVariable Long serviceId,
+            @ApiParam(value = "Provider ID", required = true) @PathVariable Long providerId) {
+        ServiceEntity service = serviceService.getServiceById(serviceId, DepthLevel.MEDIUM);
+        ProviderEntity provider = providerService.getProviderById(providerId, DepthLevel.SHALLOW);
 
         service.removeProvider(provider);
         return serviceService.updateService(serviceId, service);

@@ -9,7 +9,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-	id("org.springframework.boot") version "3.2.2"
+    id("org.springframework.boot") version "3.2.2"
+    id("io.spring.dependency-management") version "1.1.4"
     id("org.flywaydb.flyway") version "10.8.1"
 }
 
@@ -20,21 +21,22 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
-
-    // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
     implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
+    implementation("org.flywaydb:flyway-core")
+    implementation("io.springfox:springfox-swagger2:3.0.0")
+    implementation("io.github.cdimascio:java-dotenv:5.2.2")
+
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("crud.java.App")
+    mainClass.set("crud.App")
 }
 
 tasks.named<Test>("test") {

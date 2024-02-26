@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crud_java
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: true
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+    defaultSchema: public
+    locations: classpath:db/migration
+
+# Swagger Configuration
+swagger:
+  enabled: true
+  title: CRUD JAVA API
+  description: Documentation of CRUD API in Java
+  version: 1.0
+  contact:
+    name: Eduard-Edi Jerkovic
+    email: edi@test.com
