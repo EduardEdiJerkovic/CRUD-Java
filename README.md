@@ -16,9 +16,32 @@ Make sure you have the following installed:
 
 ### Database Configuration
 
-Create a new `.env` file based on the provided `.env.example` file. Update the `DB_USERNAME` and `DB_PASSWORD` with your PostgreSQL database username and password.
+1. Create a new `.env` file based on the provided `.env.example` file.
 
-```env
-DB_USERNAME=test
-DB_PASSWORD=test
-```
+   ```env
+   DB_USERNAME=test
+   DB_PASSWORD=test
+   ```
+
+2. Run Gradle build to compile the application. Open a terminal and navigate to the project directory, then run:
+
+   ```
+   ./gradlew build
+   ```
+
+3. Execute database migrations using Gradle and Flyway. Run the following command:
+
+   ```
+   ./gradlew flywayMigrate
+   ```
+
+4. Finally, run the application using the following Gradle command:
+
+   ```
+   ./gradlew bootRun
+   ```
+
+5. Application should be available on:
+   ```
+   http://localhost:8080
+   ```
