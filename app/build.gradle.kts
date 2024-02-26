@@ -21,7 +21,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
     implementation("com.google.guava:guava:31.1-jre")
     implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -31,7 +30,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("io.springfox:springfox-swagger2:3.0.0")
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
-
+    implementation("org.codehaus.groovy:groovy-all:3.0.10")
+    testImplementation("org.spockframework:spock-core:2.0-M5-groovy-3.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 application {
